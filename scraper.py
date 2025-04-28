@@ -70,7 +70,9 @@ def is_valid(url):
             return False
         
         #Checking for specific traps
-        if re.search(r'(day/\d{4}-\d{2}-\d{2}|wics-bonding/\d{4}-\d{2})', parsed.path):
+        #Kept seeing same pattern, but for different directories <path>/YYYY-MM
+        #Foudn [^/]+ which is like a stand-in that can be some sub-path
+        if re.search(r'(day/\d{4}-\d{2}-\d{2}|/events/category/[^/]+/\d{4}-\d{2})', parsed.path):
             return False
         
         
