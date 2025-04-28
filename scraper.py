@@ -64,7 +64,8 @@ def is_valid(url):
             "ical",
             "outlook-ical",
             "tribe-bar-date",
-            "eventDate"
+            "eventDate",
+            "paged="
         ]
         #may be inificient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
@@ -73,7 +74,9 @@ def is_valid(url):
         #Checking for specific traps
         #Kept seeing same pattern, but for different directories <path>/YYYY-MM
         #Foudn [^/]+ which is like a stand-in that can be some sub-path
-        if re.search(r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2})', parsed.path):
+        if re.search(
+            r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
+            r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2})', parsed.path):
             return False
         
         
