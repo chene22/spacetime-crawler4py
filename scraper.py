@@ -27,6 +27,9 @@ def extract_next_links(url, resp):
     try:
         #goes through the content of the page (HTML) and grabs each tag (headers, paragrpahs, etc)
         html_content = BeautifulSoup(resp.raw_response.content, 'html.parser') 
+
+        #FIXME - Save content to file
+
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
             href = links.get('href') #gets the actual link (relative)
@@ -74,13 +77,12 @@ def is_valid(url):
         
         #Checking for specific traps
         #Kept seeing same pattern, but for different directories <path>/YYYY-MM
-        #Foudn [^/]+ which is like a stand-in that can be some sub-path
+        #Found [^/]+ which is like a stand-in that can be some sub-path
         if re.search(
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2})' +
             r'|/talks/\d{4}-\d{2}-\d{2}', parsed.path):
             return False
-        
         
         
         #FIXME - Do we want php files?
@@ -93,7 +95,7 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|php)$", parsed.path.lower())
-
+                                                #Want this?
     except TypeError:
         print ("TypeError for ", parsed)
         raise
