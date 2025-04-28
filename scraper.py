@@ -26,11 +26,7 @@ def extract_next_links(url, resp):
     
     try:
         #goes through the content of the page (HTML) and grabs each tag (headers, paragrpahs, etc)
-        html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
-        # from the html content, determine:
-        # how many words it contains (for report requirement #2)
-        # word frequency (for report requirement #3)
-
+        html_content = BeautifulSoup(resp.raw_response.content, 'html.parser') 
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
             href = links.get('href') #gets the actual link (relative)
@@ -47,7 +43,6 @@ def is_valid(url):
     # There are already some conditions that return False.
     try:
         parsed = urlparse(url)
-        #FIXME - Need to check if links are in the expected domains
         #FIXME - Need to not get stuck in traps
         if parsed.scheme not in set(["http", "https"]):
             return False
@@ -59,7 +54,7 @@ def is_valid(url):
             "stat.uci.edu",
         ]
         domain = parsed.netloc.lower()
-        if not any(domain.endswith(allowed_domains) for allowed in allowed_domains):
+        if not any(allowed in domain for allowed in allowed_domains):
             return False
 
         return not re.match(

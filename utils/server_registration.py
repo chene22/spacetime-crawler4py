@@ -25,7 +25,7 @@ def init(df, user_agent, fresh):
     return reg.load_balancer
 
 def get_cache_server(config, restart):
-    print("Starting get_cache_server");
+    print("Starting get_cache_server")
     init_node = Node(
         init, Types=[Register], dataframe=(config.host, config.port))
     print("We have defined init_node")
