@@ -2,6 +2,14 @@ import re
 from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
 
+# unique_pages = set() # for finding how many unique pages, get the length of this set
+longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
+word_frequencies = dict() # word, frequency, for finding top 50 most common words
+subdomains = dict() # subdomain (ie vision.uci.edu), number of pages in it. you can count # of unique pages by summing values of this dictionary
+
+crawled_num = 0
+SAVE_EVERY_X_PAGES = 100
+
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     return [link for link in links if is_valid(link)]
@@ -30,6 +38,7 @@ def extract_next_links(url, resp):
 
         #FIXME - Save content to file
 
+
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
             href = links.get('href') #gets the actual link (relative)
@@ -37,7 +46,6 @@ def extract_next_links(url, resp):
             links_found.append(abs_url)
     except Exception as e:
         print(f'There was an issue grabbing a link from {url}: {e}')
-    print("links found:", links_found)
     return links_found
 
 def is_valid(url):
@@ -99,3 +107,11 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+def save_report():
+    report = {
+        "unique pages": sum(subdomains.values()),
+        "subdomains": sorted(subdomains),
+        "word frequencies": sorted(word_frequencies),
+        "longest pages": sorted(longest_page)
+    }
