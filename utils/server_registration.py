@@ -14,6 +14,7 @@ def init(df, user_agent, fresh):
         df.pull_await()
         print("Passed df.pull_await()")
         if reg.invalid:
+            print("user agent string is not acceptable, about to raise a runtime error")
             raise RuntimeError("User agent string is not acceptable.")
         if reg.load_balancer:
             print("reg.load_balancer is true")
