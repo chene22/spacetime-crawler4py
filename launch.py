@@ -12,6 +12,7 @@ def main(config_file, restart):
     config = Config(cparser)
     config.cache_server = get_cache_server(config, restart)
     crawler = Crawler(config, restart)
+    print("CRAWLER IS ABOUT TO START!!!")
     crawler.start()
 
 

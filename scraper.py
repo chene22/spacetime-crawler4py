@@ -34,7 +34,7 @@ def extract_next_links(url, resp):
             links_found.append(abs_url)
     except Exception as e:
         print(f'There was an issue grabbing a link from {url}: {e}')
-
+    print("links found:", links_found)
     return links_found
 
 def is_valid(url):
