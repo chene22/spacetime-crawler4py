@@ -10,6 +10,7 @@ def main(config_file, restart):
     cparser = ConfigParser()
     cparser.read(config_file)
     config = Config(cparser)
+    print("Line 13 of launch")
     config.cache_server = get_cache_server(config, restart)
     print("Got past cache_server")
     crawler = Crawler(config, restart)
