@@ -10,6 +10,7 @@ def init(df, user_agent, fresh):
         df.commit()
         df.push_await()
     while not reg.load_balancer:
+        print("Infinite loop?")
         df.pull_await()
         if reg.invalid:
             raise RuntimeError("User agent string is not acceptable.")
