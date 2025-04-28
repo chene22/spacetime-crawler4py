@@ -10,7 +10,6 @@ def init(df, user_agent, fresh):
         df.commit()
         df.push_await()
     while not reg.load_balancer:
-        print("Inside while loop inside server_registration.py init")
         df.pull_await()
         print("Passed df.pull_await()")
         if reg.invalid:
