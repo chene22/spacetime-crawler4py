@@ -3,7 +3,6 @@ from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
 import json
 
-# unique_pages = set() # for finding how many unique pages, get the length of this set
 longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
 word_frequencies = dict() # word, frequency, for finding top 50 most common words
 subdomains = dict() # subdomain (ie vision.uci.edu), number of pages in it. you can count # of unique pages by summing values of this dictionary
@@ -13,6 +12,7 @@ SAVE_EVERY_X_PAGES = 100
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
+    process_url_for_report(url, resp)
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
@@ -38,7 +38,6 @@ def extract_next_links(url, resp):
         html_content = BeautifulSoup(resp.raw_response.content, 'html.parser') 
 
         #FIXME - Save content to file
-
 
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
@@ -108,6 +107,42 @@ def is_valid(url):
     except TypeError:
         print ("TypeError for ", parsed)
         raise
+
+def process_url_for_report(url, resp):
+    if resp.status != 200 or resp.raw_response is None:
+        print(f'Resp error: {resp.error}')
+        return
+
+    global word_frequencies
+    global longest_page
+
+    # defrag the url to get just the domain
+    parsed_url = urldefrag(url)[0]
+    parsed = urlparse(parsed_url)
+
+    # add the subdomain to the dictionary and increment by 1
+    if parsed.netloc.endswith(".uci.edu"):
+        subdomains[parsed.netloc] += 1
+
+    if parsed_url not in longest_page:
+        # count the number of words in the page and add the url and its word count to the dictionary
+        html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
+        words = html_content.get_text(strip=True).split()
+
+        # count the word frequency
+        for word in words:
+            word_frequencies[word] += 1
+
+        longest_page[parsed.netloc] = len(words)
+
+    # save the report json every X crawls
+    global crawled_num
+    crawled_num += 1
+    if crawled_num % SAVE_EVERY_X_PAGES == 0:
+        save_report()
+
+    # to count the number of subdomain pages, we add the subdomain to the dictionary
+    # and then add it by 1 each time we encounter the subdomain
 
 def save_report():
     report = {
