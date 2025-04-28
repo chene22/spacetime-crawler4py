@@ -59,7 +59,8 @@ def is_valid(url):
             return False
         if 'today.uci.edu' in domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
             return False
-        elif not any(allowed in domain for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
+        #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
+        elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
         
 
