@@ -26,7 +26,11 @@ def extract_next_links(url, resp):
     
     try:
         #goes through the content of the page (HTML) and grabs each tag (headers, paragrpahs, etc)
-        html_content = BeautifulSoup(resp.raw_response.content, 'html.parser') 
+        html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
+        # from the html content, determine:
+        # how many words it contains (for report requirement #2)
+        # word frequency (for report requirement #3)
+
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
             href = links.get('href') #gets the actual link (relative)
