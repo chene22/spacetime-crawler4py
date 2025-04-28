@@ -70,7 +70,7 @@ def is_valid(url):
             return False
         
         #Checking for specific traps
-        if re.search(r'day/\d{4}-\d{2}-\d{2}', parsed.path) or re.search(r'/\d{2}-\d{2}/'):
+        if re.search(r'day/\d{4}-\d{2}-\d{2}', parsed.path) or re.search(r'/\d{2}-\d{2}/', parsed.path):
             return False
         
         
