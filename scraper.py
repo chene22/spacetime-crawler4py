@@ -63,7 +63,8 @@ def is_valid(url):
         unallowed_queries = [
             "ical",
             "outlook-ical",
-            "tribe-bar-date"
+            "tribe-bar-date",
+            "eventDate"
         ]
         #may be inificient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
