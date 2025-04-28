@@ -1,5 +1,5 @@
 import re
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
 
 def scraper(url, resp):
@@ -30,7 +30,7 @@ def extract_next_links(url, resp):
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
             href = links.get('href') #gets the actual link (relative)
-            abs_url = urljoin(url, href)
+            abs_url = urldefrag(urljoin(url, href))[0] #removes the fragment part of the absolute URL (url + href/relative url), does not save the fragment part (i.e. getting the first element)
             links_found.append(abs_url)
     except Exception as e:
         print(f'There was an issue grabbing a link from {url}: {e}')
@@ -43,6 +43,8 @@ def is_valid(url):
     # There are already some conditions that return False.
     try:
         parsed = urlparse(url)
+        #FIXME - Need to check if links are in the expected domains
+        #FIXME - Need to not get stuck in traps
         if parsed.scheme not in set(["http", "https"]):
             return False
         return not re.match(
