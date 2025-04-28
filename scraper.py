@@ -1,6 +1,7 @@
 import re
 from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
+import json
 
 # unique_pages = set() # for finding how many unique pages, get the length of this set
 longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
@@ -115,3 +116,5 @@ def save_report():
         "word frequencies": sorted(word_frequencies),
         "longest pages": sorted(longest_page)
     }
+    with open("report/report.json", "w") as f:
+        json.dump(report, f)
