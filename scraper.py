@@ -53,6 +53,17 @@ def is_valid(url):
             "informatics.uci.edu",
             "stat.uci.edu"
         ]
+
+        unallowed_queries = [
+            "ical",
+            "outlook-ical",
+            "tribe-bar-date"
+        ]
+
+        #may be inificient
+        if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
+            return False
+    
         domain = parsed.netloc.lower()
         #Found how to check for certain text pattern using regrex (This checks for yyyy-mm-dd)
         if re.search(r'day/\d{4}-\d{2}-\d{2}', parsed.path):
