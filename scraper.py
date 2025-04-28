@@ -43,36 +43,36 @@ def is_valid(url):
     # There are already some conditions that return False.
     try:
         parsed = urlparse(url)
-        #FIXME - Need to not get stuck in traps
         if parsed.scheme not in set(["http", "https"]):
             return False
-
+        
         allowed_domains = [
             "ics.uci.edu",
             "cs.uci.edu",
             "informatics.uci.edu",
             "stat.uci.edu"
         ]
-
-        unallowed_queries = [
-            "ical",
-            "outlook-ical",
-            "tribe-bar-date"
-        ]
-
-        #may be inificient
-        if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
-            return False
-    
         domain = parsed.netloc.lower()
         #Found how to check for certain text pattern using regrex (This checks for yyyy-mm-dd)
-        if re.search(r'day/\d{4}-\d{2}-\d{2}', parsed.path):
-            return False
         if 'today.uci.edu' in domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
             return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
+        
+        unallowed_queries = [
+            "ical",
+            "outlook-ical",
+            "tribe-bar-date"
+        ]
+        #may be inificient
+        if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
+            return False
+        
+        #Checking for specific traps
+        if re.search(r'day/\d{4}-\d{2}-\d{2}', parsed.path) or re.search(r'/\d{2}-\d{2}/'):
+            return False
+        
         
 
         return not re.match(
