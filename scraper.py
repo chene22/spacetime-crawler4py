@@ -2,12 +2,14 @@ import re
 from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
 import json
+from nltk.corpus import stopwords
 
 longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
 word_frequencies = dict() # word, frequency, for finding top 50 most common words
 subdomains = dict() # subdomain (ie vision.uci.edu), number of pages in it. you can count # of unique pages by summing values of this dictionary
 seen_urls = set()
 
+'''
 STOPWORDS = set([
     "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't",
     "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't",
@@ -25,7 +27,9 @@ STOPWORDS = set([
     "you've", "your", "yours", "yourself", "yourselves", "&", "-", ",", ".", ":", "—", "says", "will", "b", "c", "d",
     "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
 ])
+'''
 
+STOPWORDS = set(stopwords.words('english'))
 word_filter = re.compile(r'^[a-z]+$')
 
 crawled_num = 0
@@ -175,6 +179,5 @@ def save_report():
     try:
         with open("report/report.json", "w") as f:
             json.dump(report, f, indent=2)
-            print("REPORT SAVED!")
     except Exception as e:
         print("Failed to save report. Error:", e)
