@@ -104,8 +104,8 @@ def is_valid(url):
         #Found [^/]+ which is like a stand-in that can be some sub-path
         if re.search(
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
-            r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2})' +
-            r'|/talks/\d{4}-\d{2}-\d{2}', parsed.path):
+            r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}' +
+            r'|/talks/\d{4}-\d{2}-\d{2})', parsed.path):
             return False
         
         
@@ -178,9 +178,9 @@ def process_url_for_report(url, resp):
 def save_report():
     report = {
         "unique pages": len(seen_urls),
-        "subdomains": dict(sorted(subdomains.items(), key=lambda item: item[1]), reverse=True),
+        "subdomains": dict(sorted(subdomains.items(), key=lambda item: item[1], reverse=True)),
         "word frequencies": sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)[:50],
-        "longest pages": sorted(longest_page.items(), key=lambda item: item[1], reverse=True)
+        "longest page": sorted(longest_page.items(), key=lambda item: item[1], reverse=True)
     }
     with open("report/report.json", "w") as f:
         json.dump(report, f, indent=2)
