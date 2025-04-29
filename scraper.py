@@ -142,7 +142,7 @@ def process_url_for_report(url, resp):
 
     # add the subdomain to the dictionary and increment by 1
     if parsed_url.netloc.endswith(".uci.edu"):
-        subdomains[parsed_url.netloc] += 1
+        subdomains[parsed_url.netloc] = subdomains.get(parsed_url.netloc, 0) + 1
 
     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
     words = html_content.get_text(separator=' ', strip=True).split()
@@ -150,7 +150,7 @@ def process_url_for_report(url, resp):
     words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS]
 
     for word in words_without_stopwords:
-        word_frequencies[word] += 1
+        word_frequencies[word] = word_frequencies.get(word, 0) + 1
 
     longest_page[defragged_url] = len(words) #FIXME - may have to change to words_without_stopwords
 
