@@ -129,8 +129,11 @@ def process_url_for_report(url, resp):
         print(f'Resp error: {resp.error}')
         return
 
+    # FIXME - why were these globals commented out?
+    # apparently dictionaries and lists in python3 don't need a global declaration to work
     # global word_frequencies
     # global longest_page
+
 
     # defrag the url to get just the domain
     defragged_url = urldefrag(url)[0]
