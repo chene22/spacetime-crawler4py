@@ -129,12 +129,6 @@ def process_url_for_report(url, resp):
         print(f'Resp error: {resp.error}')
         return
 
-    # FIXME - why were these globals commented out?
-    # apparently dictionaries and lists in python3 don't need a global declaration to work
-    # global word_frequencies
-    # global longest_page
-
-
     # defrag the url to get just the domain
     defragged_url = urldefrag(url)[0]
     parsed_url = urlparse(defragged_url)
@@ -157,25 +151,11 @@ def process_url_for_report(url, resp):
 
     longest_page[defragged_url] = len(words) #FIXME - may have to change to words_without_stopwords
 
-    # if parsed_url not in longest_page:
-    #     # count the number of words in the page and add the url and its word count to the dictionary
-    #     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
-    #     words = html_content.get_text(strip=True).split()
-
-    #     # count the word frequency
-    #     for word in words:
-    #         word_frequencies[word] += 1
-
-    #     longest_page[parsed.netloc] = len(words)
-
     # save the report json every X crawls
     global crawled_num
     crawled_num += 1
     if crawled_num % SAVE_EVERY_X_PAGES == 0:
         save_report()
-
-    # to count the number of subdomain pages, we add the subdomain to the dictionary
-    # and then add it by 1 each time we encounter the subdomain
 
 def save_report():
     print("SAVING REPORT!")
