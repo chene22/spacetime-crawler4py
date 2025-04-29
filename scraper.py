@@ -178,7 +178,7 @@ def save_report():
     report = {
         "unique pages": len(seen_urls),
         "subdomains": dict(sorted(subdomains.items(), key=lambda item: item[1], reverse=True)),
-        "word frequencies": dict(sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True))[:50],
+        "word frequencies": sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)[:50],
         "longest page": max(longest_page.items())
     }
     with open("report/report.json", "w") as f:
