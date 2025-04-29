@@ -6,6 +6,7 @@ import json
 longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
 word_frequencies = dict() # word, frequency, for finding top 50 most common words
 subdomains = dict() # subdomain (ie vision.uci.edu), number of pages in it. you can count # of unique pages by summing values of this dictionary
+seen_urls = set()
 
 crawled_num = 0
 SAVE_EVERY_X_PAGES = 100
@@ -36,8 +37,6 @@ def extract_next_links(url, resp):
     try:
         #goes through the content of the page (HTML) and grabs each tag (headers, paragrpahs, etc)
         html_content = BeautifulSoup(resp.raw_response.content, 'html.parser') 
-
-        #FIXME - Save content to file
 
         #loops through all the link tags <a> that have a href value (actual link)
         for links in html_content.find_all('a', href=True): 
@@ -113,27 +112,40 @@ def process_url_for_report(url, resp):
         print(f'Resp error: {resp.error}')
         return
 
-    global word_frequencies
-    global longest_page
+    # global word_frequencies
+    # global longest_page
 
     # defrag the url to get just the domain
-    parsed_url = urldefrag(url)[0]
-    parsed = urlparse(parsed_url)
+    defragged_url = urldefrag(url)[0]
+    parsed_url = urlparse(defragged_url)
+
+    #unique pages
+    if defragged_url not in seen_urls:
+        seen_urls.add(defragged_url)
 
     # add the subdomain to the dictionary and increment by 1
-    if parsed.netloc.endswith(".uci.edu"):
-        subdomains[parsed.netloc] += 1
+    if parsed_url.netloc.endswith(".uci.edu"):
+        subdomains[parsed_url.netloc] += 1
 
-    if parsed_url not in longest_page:
-        # count the number of words in the page and add the url and its word count to the dictionary
-        html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
-        words = html_content.get_text(strip=True).split()
+    html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
+    words = html_content.get_text(separator=' ', strip=True).split()
 
-        # count the word frequency
-        for word in words:
-            word_frequencies[word] += 1
+    for word in words:
+        word_frequencies[word] += 1
 
-        longest_page[parsed.netloc] = len(words)
+    longest_page[defragged_url] = len(words)
+
+
+    # if parsed_url not in longest_page:
+    #     # count the number of words in the page and add the url and its word count to the dictionary
+    #     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
+    #     words = html_content.get_text(strip=True).split()
+
+    #     # count the word frequency
+    #     for word in words:
+    #         word_frequencies[word] += 1
+
+    #     longest_page[parsed.netloc] = len(words)
 
     # save the report json every X crawls
     global crawled_num
