@@ -2,7 +2,7 @@ import re
 from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
 import json
-from nltk.corpus import stopwords
+#from nltk.corpus import stopwords
 
 longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
 word_frequencies = dict() # word, frequency, for finding top 50 most common words
@@ -29,7 +29,7 @@ STOPWORDS = set([
 ])
 '''
 
-STOPWORDS = set(stopwords.words('english'))
+#STOPWORDS = set(stopwords.words('english'))
 word_filter = re.compile(r'^[a-z]+$')
 
 crawled_num = 0
