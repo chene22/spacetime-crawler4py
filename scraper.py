@@ -175,5 +175,6 @@ def save_report():
     try:
         with open("report/report.json", "w") as f:
             json.dump(report, f, indent=2)
+            print("REPORT SAVED!")
     except Exception as e:
         print("Failed to save report. Error:", e)
