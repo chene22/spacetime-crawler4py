@@ -178,11 +178,16 @@ def process_url_for_report(url, resp):
     # and then add it by 1 each time we encounter the subdomain
 
 def save_report():
+    print("SAVING REPORT!")
     report = {
         "unique pages": len(seen_urls),
         "subdomains": dict(sorted(subdomains.items(), key=lambda item: item[1], reverse=True)),
         "word frequencies": sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)[:50],
         "longest page": max(longest_page.items())
     }
-    with open("report/report.json", "w") as f:
-        json.dump(report, f, indent=2)
+    print("REPORT OBJECT:", report)
+    try:
+        with open("report/report.json", "w") as f:
+            json.dump(report, f, indent=2)
+    except Exception as e:
+        print("Failed to save report. Error:", e)
