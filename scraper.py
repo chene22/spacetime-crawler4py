@@ -177,10 +177,10 @@ def process_url_for_report(url, resp):
 
 def save_report():
     report = {
-        "unique pages": sum(subdomains.values()),
-        "subdomains": sorted(subdomains),
-        "word frequencies": sorted(word_frequencies),
-        "longest pages": sorted(longest_page)
+        "unique pages": len(seen_urls),
+        "subdomains": dict(sorted(subdomains.items(), reverse=True, key=lambda item: item[1])),
+        "word frequencies": sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)[:50],
+        "longest pages": sorted(longest_page.items(), key=lambda item: item[1], reverse=True)
     }
     with open("report/report.json", "w") as f:
         json.dump(report, f)
