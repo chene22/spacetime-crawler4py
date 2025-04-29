@@ -147,7 +147,7 @@ def process_url_for_report(url, resp):
     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
     words = html_content.get_text(separator=' ', strip=True).split()
 
-    words_without_stopwords = [word.lower() not in STOPWORDS for word in words]
+    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS]
 
     for word in words_without_stopwords:
         word_frequencies[word] += 1
