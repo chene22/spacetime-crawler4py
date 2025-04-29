@@ -96,7 +96,10 @@ def is_valid(url):
             "tribe-bar-date=",
             "eventDate=",
             "paged=",
-            "eventDisplay="
+            "eventDisplay=",
+            "do=",
+            "ns=",
+            "tab_files="
         ]
         #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
