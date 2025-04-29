@@ -103,7 +103,8 @@ def is_valid(url):
             "eventDisplay=",
             "do=",
             "ns=",
-            "tab_files="
+            "tab_files=",
+            "tab_details="
         ]
         #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
@@ -115,8 +116,7 @@ def is_valid(url):
         if re.search(
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}' +
-            r'|/talks/\d{4}-\d{2}-\d{2}|/doku\.php/accounts:account_activation' +
-            r'|/doku\.php/virtual_environments:jupyterhub)', parsed.path):
+            r'|/talks/\d{4}-\d{2}-\d{2}|/doku\.php/accounts:account_activation)', parsed.path):
             return False
         
         
