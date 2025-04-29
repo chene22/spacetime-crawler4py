@@ -81,7 +81,7 @@ def is_valid(url):
         ]
         domain = parsed.netloc.lower()
         #Found how to check for certain text pattern using regrex (This checks for yyyy-mm-dd)
-        if 'today.uci.edu' in domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
+        if 'today.uci.edu' == domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
             return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
@@ -147,7 +147,9 @@ def process_url_for_report(url, resp):
     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
     words = html_content.get_text(separator=' ', strip=True).split()
 
-    for word in words:
+    words_without_stopwords = [word.lower() not in STOPWORDS for word in words]
+
+    for word in words_without_stopwords:
         word_frequencies[word] += 1
 
     longest_page[defragged_url] = len(words)
