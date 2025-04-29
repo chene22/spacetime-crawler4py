@@ -154,7 +154,6 @@ def process_url_for_report(url, resp):
 
     longest_page[defragged_url] = len(words) #FIXME - may have to change to words_without_stopwords
 
-
     # if parsed_url not in longest_page:
     #     # count the number of words in the page and add the url and its word count to the dictionary
     #     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
@@ -179,8 +178,8 @@ def save_report():
     report = {
         "unique pages": len(seen_urls),
         "subdomains": dict(sorted(subdomains.items(), key=lambda item: item[1], reverse=True)),
-        "word frequencies": sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)[:50],
-        "longest page": sorted(longest_page.items(), key=lambda item: item[1], reverse=True)
+        "word frequencies": dict(sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True))[:50],
+        "longest page": max(longest_page.items())
     }
     with open("report/report.json", "w") as f:
         json.dump(report, f, indent=2)
