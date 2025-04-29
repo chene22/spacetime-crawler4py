@@ -2,12 +2,14 @@ import re
 from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
 import json
+from nltk.corpus import stopwords
 
 longest_page = dict() # url, length in words, for finding longest page in terms of number of words excluding stopwords
 word_frequencies = dict() # word, frequency, for finding top 50 most common words
 subdomains = dict() # subdomain (ie vision.uci.edu), number of pages in it. you can count # of unique pages by summing values of this dictionary
 seen_urls = set()
 
+'''
 STOPWORDS = set([
     "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't",
     "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't",
@@ -22,8 +24,13 @@ STOPWORDS = set([
     "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're",
     "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who",
     "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're",
-    "you've", "your", "yours", "yourself", "yourselves"
+    "you've", "your", "yours", "yourself", "yourselves", "&", "-", ",", ".", ":", "—", "says", "will", "b", "c", "d",
+    "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
 ])
+'''
+
+STOPWORDS = set(stopwords.words('english'))
+word_filter = re.compile(r'^[a-z]+$')
 
 crawled_num = 0
 SAVE_EVERY_X_PAGES = 100
@@ -95,7 +102,7 @@ def is_valid(url):
             "paged=",
             "eventDisplay="
         ]
-        #may be inificient
+        #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
             return False
         
@@ -144,12 +151,12 @@ def process_url_for_report(url, resp):
     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
     words = html_content.get_text(separator=' ', strip=True).split()
 
-    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS]
+    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS and word_filter.match(word.lower())]
 
     for word in words_without_stopwords:
         word_frequencies[word] = word_frequencies.get(word, 0) + 1
 
-    longest_page[defragged_url] = len(words) #FIXME - may have to change to words_without_stopwords
+    longest_page[defragged_url] = len(words_without_stopwords)
 
     # save the report json every X crawls
     global crawled_num
