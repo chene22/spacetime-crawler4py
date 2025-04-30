@@ -102,7 +102,7 @@ def is_valid(url):
             "paged=",
             "eventDisplay=",
             "do=",
-            "ns=",
+            "ns=services",
             "tab_files=",
             "tab_details="
         ]
