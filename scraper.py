@@ -96,6 +96,8 @@ def is_valid(url):
             return False
         if 'gitlab.ics.uci.edu' in parsed.netloc: #Just a bunch of github content, needs log in and is mostly empty
             return False
+        if 'ngs.ics.uci.edu' in parsed.netloc:
+            return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
