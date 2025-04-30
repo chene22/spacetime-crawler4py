@@ -109,7 +109,8 @@ def is_valid(url):
             "do=",
             "ns=services",
             "tab_files=",
-            "tab_details="
+            "tab_details=",
+            "subPage="
         ]
         #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
