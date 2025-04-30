@@ -127,6 +127,7 @@ def is_valid(url):
         #Checking for specific traps
         #Kept seeing same pattern, but for different directories <path>/YYYY-MM
         #Found [^/]+ which is like a stand-in that can be some sub-path
+        #All [] keywords were found via the internet
         if re.search(
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}' +
@@ -135,7 +136,6 @@ def is_valid(url):
             return False
         
         
-        #FIXME - Do we want php files?
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
@@ -145,7 +145,6 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1|scm|rkt|pd|mpg"
             + r"|thmx|mso|arff|rtf|jar|csv|py|ip|ipynb"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz|php|md|git)$", parsed.path.lower())
-                                                #Want this?
     except TypeError:
         print ("TypeError for ", parsed)
         raise
@@ -168,7 +167,7 @@ def process_url_for_report(url, resp):
         subdomains[parsed_url.netloc] = subdomains.get(parsed_url.netloc, 0) + 1
 
     soup = BeautifulSoup(resp.raw_response.content, 'html.parser')
-    for tag in soup(['script', 'style']):
+    for tag in soup(['script', 'style']): #FIXME - Might need to restructure so that only (p, h1, h2, etc.) is being looked at for word data
         tag.decompose()
     visible_text = soup.get_text(separator=' ', strip=True)
     words = visible_text.split()
