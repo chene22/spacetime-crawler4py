@@ -161,8 +161,11 @@ def process_url_for_report(url, resp):
     if parsed_url.netloc.endswith(".uci.edu"):
         subdomains[parsed_url.netloc] = subdomains.get(parsed_url.netloc, 0) + 1
 
-    html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
-    words = html_content.get_text(separator=' ', strip=True).split()
+    soup = BeautifulSoup(resp.raw_response.content, 'html.parser')
+    for tag in soup(['script', 'style']):
+        tag.decompose()
+    visible_text = soup.get_text(separator=' ', strip=True)
+    words = visible_text.split()
 
     words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS and word_filter.match(word.lower()) and len(word) > 1]
 
