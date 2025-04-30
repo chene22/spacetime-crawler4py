@@ -1,6 +1,7 @@
 import re
 from urllib.parse import urlparse, urljoin, urldefrag
 from bs4 import BeautifulSoup
+from datetime import datetime
 import json
 import nltk
 nltk.download('stopwords')
@@ -180,8 +181,11 @@ def save_report():
         "longest page": max(longest_page.items())
     }
     print("REPORT OBJECT:", report)
+
+    current_time = datetime.now().strftime("%m-%d-%Y %H-%M-%S")
+    file_path = "report/report" + str(current_time) + ".json"
     try:
-        with open("report/report.json", "w") as f:
+        with open(file_path, "w") as f:
             json.dump(report, f, indent=2)
     except Exception as e:
         print("Failed to save report. Error:", e)
