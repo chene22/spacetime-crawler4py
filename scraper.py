@@ -110,7 +110,9 @@ def is_valid(url):
             "ns=services",
             "tab_files=",
             "tab_details=",
-            "subPage="
+            "subPage=",
+            "C=",
+            "O="
         ]
         #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
@@ -161,7 +163,7 @@ def process_url_for_report(url, resp):
     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
     words = html_content.get_text(separator=' ', strip=True).split()
 
-    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS and word_filter.match(word.lower())]
+    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS and word_filter.match(word.lower()) and len(word) > 1]
 
     for word in words_without_stopwords:
         word_frequencies[word] = word_frequencies.get(word, 0) + 1
