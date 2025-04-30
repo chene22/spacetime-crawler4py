@@ -94,6 +94,8 @@ def is_valid(url):
         #Found how to check for certain text pattern using regrex (This checks for yyyy-mm-dd)
         if 'today.uci.edu' == domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
             return False
+        if 'gitlab.ics.uci.edu' in parsed.netloc: #Just a bunch of github content, needs log in and is mostly empty
+            return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
@@ -108,7 +110,10 @@ def is_valid(url):
             "do=",
             "ns=services",
             "tab_files=",
-            "tab_details="
+            "tab_details=",
+            "subPage=",
+            "C=",
+            "O="
         ]
         #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
@@ -120,7 +125,7 @@ def is_valid(url):
         if re.search(
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}' +
-            r'|/talks/\d{4}-\d{2}-\d{2})', parsed.path):
+            r'|/talks/\d{4}-\d{2}-\d{2}|/-/|/~[A-Za-z0-9_-]+/)', parsed.path):
             return False
         
         
@@ -131,9 +136,9 @@ def is_valid(url):
             + r"|wav|avi|mov|mpeg|ram|m4v|mkv|ogg|ogv|pdf"
             + r"|ps|eps|tex|ppt|pptx|doc|docx|xls|xlsx|names"
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
-            + r"|epub|dll|cnf|tgz|sha1"
-            + r"|thmx|mso|arff|rtf|jar|csv"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|php|md)$", parsed.path.lower())
+            + r"|epub|dll|cnf|tgz|sha1|scm|rkt|pd|mpg"
+            + r"|thmx|mso|arff|rtf|jar|csv|py|ip|ipynb"
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|php|md|git)$", parsed.path.lower())
                                                 #Want this?
     except TypeError:
         print ("TypeError for ", parsed)
@@ -159,7 +164,7 @@ def process_url_for_report(url, resp):
     html_content = BeautifulSoup(resp.raw_response.content, 'html.parser')
     words = html_content.get_text(separator=' ', strip=True).split()
 
-    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS and word_filter.match(word.lower())]
+    words_without_stopwords = [word.lower() for word in words if word.lower() not in STOPWORDS and word_filter.match(word.lower()) and len(word) > 1]
 
     for word in words_without_stopwords:
         word_frequencies[word] = word_frequencies.get(word, 0) + 1
