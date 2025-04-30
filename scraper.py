@@ -111,7 +111,7 @@ def is_valid(url):
             "eventDate=",
             "paged=",
             "eventDisplay=",
-            "do=",
+            "do=media",
             "ns=services",
             "tab_files=",
             "tab_details=",
