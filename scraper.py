@@ -94,8 +94,8 @@ def is_valid(url):
         #Found how to check for certain text pattern using regrex (This checks for yyyy-mm-dd)
         if 'today.uci.edu' == domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
             return False
-        if 'gitlab.ics.uci.edu' in parsed.netloc: #Just a bunch of github content, needs log in and is mostly empty
-            return False
+        # if 'gitlab.ics.uci.edu' in parsed.netloc: #Just a bunch of github content, needs log in and is mostly empty
+        #     return False
         if parsed.netloc == "ngs.ics.uci.edu" and parsed.path.count('/') > 1:
             return False
         if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
