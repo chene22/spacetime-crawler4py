@@ -130,7 +130,7 @@ def is_valid(url):
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}' +
             r'|/talks/\d{4}-\d{2}-\d{2}|/-/|/~[A-Za-z0-9_-]+/|/faculty2' +
-            r'|/\d{4}/\d{2})', parsed.path):
+            r'|/\d{4}/\d{2}|/tag)', parsed.path):
             return False
         
         
