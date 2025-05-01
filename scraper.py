@@ -104,6 +104,8 @@ def is_valid(url):
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
         
+        #FIXME - MIght remove https://ics.uci.edu/~eppstein/pix/ paths if have enough content
+        
         unallowed_query_keys = [
             "ical", "outlook-ical", "tribe-bar-date", "eventDate", "paged",
             "eventDisplay", "do", "ns", "tab_files", "tab_details", 
@@ -122,7 +124,7 @@ def is_valid(url):
         if re.search(
             r'(/day/\d{4}-\d{2}-\d{2}|/events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}/' +
-            r'|/talks/\d{4}-\d{2}-\d{2}|/-/)', parsed.path):
+            r'|/talks/\d{4}-\d{2}-\d{2}|/-/|~eppstein/pix/)', parsed.path):
             return False
         
         #This filtered out staffs personal pages, we can try without this filter
