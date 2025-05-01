@@ -107,7 +107,7 @@ def is_valid(url):
         unallowed_query_keys = [
             "ical", "outlook-ical", "tribe-bar-date", "eventDate", "paged",
             "eventDisplay", "do", "ns", "tab_files", "tab_details", 
-            "subPage", "C", "O", "share", "from"
+            "subPage", "C", "O", "share", "from", "action"
         ]
 
         query_params = parse_qs(parsed.query)
