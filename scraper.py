@@ -98,6 +98,8 @@ def is_valid(url):
             return False
         if parsed.netloc == "ngs.ics.uci.edu" and ("/tag/" in parsed.path or "wp-login.php" in parsed.path):
             return False
+        if 'www.cert.ics.uci.edu' in parsed.netloc:
+            return False
         # if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
         #     return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
