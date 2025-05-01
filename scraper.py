@@ -121,7 +121,7 @@ def is_valid(url):
         #All [] keywords were found via the internet
         if re.search(
             r'(/day/\d{4}-\d{2}-\d{2}|/events/\d{4}-\d{2}-\d{2}' +
-            r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}/' +
+            r'|/events/category/[^/]+/\d{4}-\d{2}|/events/[^/]+/\d{4}-\d{2}/' +
             r'|/talks/\d{4}-\d{2}-\d{2}|/-/)', parsed.path):
             return False
         
