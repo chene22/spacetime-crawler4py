@@ -100,13 +100,9 @@ def is_valid(url):
             return False
         if 'www.cert.ics.uci.edu' in parsed.netloc:
             return False
-        # if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
-        #     return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
-        
-        #FIXME - MIght remove https://ics.uci.edu/~eppstein/pix/ paths if have enough content
         
         unallowed_query_keys = [
             "ical", "outlook-ical", "tribe-bar-date", "eventDate", "paged",
