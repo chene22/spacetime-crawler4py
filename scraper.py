@@ -144,7 +144,7 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1|scm|rkt|pd|mpg"
             + r"|thmx|mso|arff|rtf|jar|csv|py|ip|ipynb"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|php|md|git)$", parsed.path.lower())
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|md)$", parsed.path.lower())
     except TypeError:
         print ("TypeError for ", parsed)
         raise
