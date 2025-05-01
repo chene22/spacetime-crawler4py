@@ -1,5 +1,5 @@
 import re
-from urllib.parse import urlparse, urljoin, urldefrag
+from urllib.parse import urlparse, urljoin, urldefrag, parse_qs
 from bs4 import BeautifulSoup
 from datetime import datetime
 import json
@@ -104,25 +104,16 @@ def is_valid(url):
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
         
-        unallowed_queries = [
-            "ical=",
-            "outlook-ical=",
-            "tribe-bar-date=",
-            "eventDate=",
-            "paged=",
-            "eventDisplay=",
-            "do=media",
-            "ns=services",
-            "tab_files=",
-            "tab_details=",
-            "subPage=",
-            "C=",
-            "O=",
-            "share=",
-            "from="
+        unallowed_query_keys = [
+            "ical", "outlook-ical", "tribe-bar-date", "eventDate", "paged",
+            "eventDisplay", "do", "ns", "tab_files", "tab_details", 
+            "subPage", "C", "O", "share", "from"
         ]
-        #may be inefficient
-        if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
+
+        query_params = parse_qs(parsed.query)
+
+        # Check if any of the unallowed query parameter keys exist in the query
+        if any(key in query_params for key in unallowed_query_keys):
             return False
         
         #Checking for specific traps
