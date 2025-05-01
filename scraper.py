@@ -96,7 +96,7 @@ def is_valid(url):
             return False
         if 'gitlab.ics.uci.edu' in parsed.netloc and ("/commit/" in parsed.query or "/commits/" in parsed.query): #Just a bunch of github content, needs log in and is mostly empty
             return False
-        if parsed.netloc == "ngs.ics.uci.edu" and "/tag/" in parsed.path:
+        if parsed.netloc == "ngs.ics.uci.edu" and ("/tag/" in parsed.path or "wp-login.php" in parsed.path):
             return False
         # if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
         #     return False
@@ -109,7 +109,7 @@ def is_valid(url):
             "eventDisplay", "do", "ns", "tab_files", "tab_details", 
             "subPage", "C", "O", "share", "from", "action"
         ]
-
+        #IF NEED MORE UNIQUE URLS - Remove action, C, and O
         query_params = parse_qs(parsed.query)
         # Check if any of the unallowed query parameter keys exist in the query
         if any(key in query_params for key in unallowed_query_keys):
