@@ -94,8 +94,8 @@ def is_valid(url):
         #Found how to check for certain text pattern using regrex (This checks for yyyy-mm-dd)
         if 'today.uci.edu' == domain and not parsed.path.startswith("/department/information_computer_sciences/"): #checks if the path today domain is a specific path
             return False
-        # if 'gitlab.ics.uci.edu' in parsed.netloc: #Just a bunch of github content, needs log in and is mostly empty
-        #     return False
+        if 'gitlab.ics.uci.edu' in parsed.netloc and ("/commit/" in parsed.query or "/commits/" in parsed.query): #Just a bunch of github content, needs log in and is mostly empty
+            return False
         if parsed.netloc == "ngs.ics.uci.edu" and "/tag/" in parsed.path:
             return False
         # if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
@@ -122,7 +122,7 @@ def is_valid(url):
         if re.search(
             r'(/day/\d{4}-\d{2}-\d{2}|/events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}/' +
-            r'|/talks/\d{4}-\d{2}-\d{2}|/-/commits/)', parsed.path):
+            r'|/talks/\d{4}-\d{2}-\d{2}|/-/)', parsed.path):
             return False
         
         #This filtered out staffs personal pages, we can try without this filter
