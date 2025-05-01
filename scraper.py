@@ -96,7 +96,7 @@ def is_valid(url):
             return False
         # if 'gitlab.ics.uci.edu' in parsed.netloc: #Just a bunch of github content, needs log in and is mostly empty
         #     return False
-        if parsed.netloc == "ngs.ics.uci.edu" and parsed.path.count('/') > 1:
+        if parsed.netloc == "ngs.ics.uci.edu" and "/tag/" in parsed.path:
             return False
         # if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
         #     return False
@@ -131,8 +131,8 @@ def is_valid(url):
         #All [] keywords were found via the internet
         if re.search(
             r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
-            r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}' +
-            r'|/talks/\d{4}-\d{2}-\d{2}|/-/|/~[A-Za-z0-9_-]+/|/faculty2)', parsed.path):
+            r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}/' +
+            r'|/talks/\d{4}-\d{2}-\d{2}|/-/|/~[A-Za-z0-9_-]+/|/faculty2/)', parsed.path):
             return False
         
         
