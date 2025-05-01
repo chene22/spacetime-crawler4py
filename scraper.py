@@ -98,8 +98,8 @@ def is_valid(url):
         #     return False
         if parsed.netloc == "ngs.ics.uci.edu" and parsed.path.count('/') > 1:
             return False
-        if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
-            return False
+        # if parsed.netloc == "grape.ics.uci.edu" and parsed.path.count('/') > 1:
+        #     return False
         #check if the domain ends with .allowedDomains, but also checks if the domain itself is an allowed domain (no .allowedDomain, but just allowedDomain)
         elif not any(domain == allowed or domain.endswith("." + allowed) for allowed in allowed_domains): #checks if parsed domain has any of the allowed domains
             return False
@@ -118,7 +118,8 @@ def is_valid(url):
             "subPage=",
             "C=",
             "O=",
-            "share="
+            "share=",
+            "from="
         ]
         #may be inefficient
         if any(query in parsed.query for query in unallowed_queries): #checks if parsed queries have any of the unallowed_queries
