@@ -111,7 +111,6 @@ def is_valid(url):
         ]
 
         query_params = parse_qs(parsed.query)
-
         # Check if any of the unallowed query parameter keys exist in the query
         if any(key in query_params for key in unallowed_query_keys):
             return False
@@ -121,9 +120,9 @@ def is_valid(url):
         #Found [^/]+ which is like a stand-in that can be some sub-path
         #All [] keywords were found via the internet
         if re.search(
-            r'(day/\d{4}-\d{2}-\d{2}|events/\d{4}-\d{2}-\d{2}' +
+            r'(/day/\d{4}-\d{2}-\d{2}|/events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}/' +
-            r'|/talks/\d{4}-\d{2}-\d{2}|/-/|/~[A-Za-z0-9_-]+/|/faculty2/)', parsed.path):
+            r'|/talks/\d{4}-\d{2}-\d{2}|/-/commit/|/~[A-Za-z0-9_-]+/|/faculty2/)', parsed.path):
             return False
         
         
