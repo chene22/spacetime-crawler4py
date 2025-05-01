@@ -122,7 +122,7 @@ def is_valid(url):
         if re.search(
             r'(/day/\d{4}-\d{2}-\d{2}|/events/\d{4}-\d{2}-\d{2}' +
             r'|/events/category/[^/]+/\d{4}-\d{2}|events/[^/]+/\d{4}-\d{2}/' +
-            r'|/talks/\d{4}-\d{2}-\d{2}|/-/commit/)', parsed.path):
+            r'|/talks/\d{4}-\d{2}-\d{2}|/-/commits/)', parsed.path):
             return False
         
         #This filtered out staffs personal pages, we can try without this filter
