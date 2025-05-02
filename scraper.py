@@ -172,7 +172,10 @@ def process_url_for_report(url, resp):
     for word in words_without_stopwords:
         word_frequencies[word] = word_frequencies.get(word, 0) + 1
 
-    longest_page[defragged_url] = len(words_without_stopwords)
+    #hash function had some collisions and overwritted the longer pages
+    #Checks if it is NOT in or if it is longer than the url it will replace
+    if defragged_url not in longest_page or len(words_without_stopwords) > longest_page[defragged_url]: 
+        longest_page[defragged_url] = len(words_without_stopwords)
 
     # save the report json every X crawls
     global crawled_num
