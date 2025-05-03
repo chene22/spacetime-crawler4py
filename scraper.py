@@ -189,7 +189,8 @@ def save_report():
         "unique pages": len(seen_urls),
         "subdomains": dict(sorted(subdomains.items(), key=lambda item: item[1], reverse=True)),
         "word frequencies": sorted(word_frequencies.items(), key=lambda item: item[1], reverse=True)[:50],
-        "longest page": max(longest_page.items())
+        "longest page": sorted(longest_page.items(), key=lambda item: item[1], reverse=True)[:25]
+        #max(longest_page.items())
     }
     print("REPORT OBJECT:", report)
 
