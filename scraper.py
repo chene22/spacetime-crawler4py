@@ -13,27 +13,6 @@ word_frequencies = dict() # word, frequency, for finding top 50 most common word
 subdomains = dict() # subdomain (ie vision.uci.edu), number of pages in it. you can count # of unique pages by summing values of this dictionary
 seen_urls = set()
 
-'''
-STOPWORDS = set([
-    "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't",
-    "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can't",
-    "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", "down", "during",
-    "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he",
-    "he'd", "he'll", "he's", "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i",
-    "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", "it", "it's", "its", "itself", "let's", "me",
-    "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", "other",
-    "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's",
-    "should", "shouldn't", "so", "some", "such", "than", "that", "that's", "the", "their", "theirs", "them",
-    "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", "they're", "they've", "this",
-    "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're",
-    "we've", "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who",
-    "who's", "whom", "why", "why's", "with", "won't", "would", "wouldn't", "you", "you'd", "you'll", "you're",
-    "you've", "your", "yours", "yourself", "yourselves", "&", "-", ",", ".", ":", "—", "says", "will", "b", "c", "d",
-    "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-])
-'''
-
-#STOPWORDS = set(stopwords.words('english'))
 word_filter = re.compile(r'^[a-z]+$')
 
 crawled_num = 0
@@ -109,7 +88,7 @@ def is_valid(url):
             "eventDisplay", "do", "ns", "tab_files", "tab_details", 
             "subPage", "C", "O", "share", "from", "action"
         ]
-        #IF NEED MORE UNIQUE URLS - Remove action, C, and O
+        
         query_params = parse_qs(parsed.query)
         # Check if any of the unallowed query parameter keys exist in the query
         if any(key in query_params for key in unallowed_query_keys):
@@ -124,11 +103,6 @@ def is_valid(url):
             r'|/events/category/[^/]+/\d{4}-\d{2}|/events/[^/]+/\d{4}-\d{2}/' +
             r'|/talks/\d{4}-\d{2}-\d{2}|/-/|/~eppstein/pix/)', parsed.path):
             return False
-        
-        #This filtered out staffs personal pages, we can try without this filter
-        #|/~[A-Za-z-]+/
-        #|/faculty2/
-        #
         
         
         return not re.match(
