@@ -17,4 +17,3 @@ class Config(object):
         self.time_delay = float(config["CRAWLER"]["POLITENESS"])
 
         self.cache_server = None
-        print("We made it to the end of Config.py")
